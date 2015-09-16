@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
   s.name         = "HTHorizontalSelectionList"
-  s.version      = "0.6.2"
+  s.version      = "0.6.3"
   s.summary      = "A simple, horizontally-scrolling list of buttons."
 
   s.description  = <<-DESC
                    A simple, horizontally-scrolling list of buttons that can be used as a more flexible replacement for UISegmentedControl.
                    DESC
 
-  s.homepage     = "https://github.com/hightower/HTHorizontalSelectionList"
+  s.homepage     = "https://github.com/prehypenyc/HTHorizontalSelectionList"
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
   s.author             = { "Erik Ackermann" => "erik@gethightower.com", "Dustin Burge" => "dustin@gethightower.com" }
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, "7.0"
 
-  s.source       = { :git => "https://github.com/hightower/HTHorizontalSelectionList.git", :tag => s.version }
+  s.source       = { :git => "https://github.com/prehypenyc/HTHorizontalSelectionList.git", :tag => s.version }
   s.source_files = 'HTHorizontalSelectionList/**/*.{h,m}'
   s.requires_arc = true
   s.frameworks   = 'Foundation', 'UIKit'
