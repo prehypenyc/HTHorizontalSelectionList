@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "HTHorizontalSelectionList"
-  s.version      = "0.6.3"
+  s.version      = "0.6.4"
   s.summary      = "A simple, horizontally-scrolling list of buttons."
 
   s.description  = <<-DESC
