@@ -24,11 +24,14 @@
 @property (nonatomic, strong) UIView *edgeFadeGradientView;
 @property (assign, nonatomic) BOOL scrollingDirectly;
 
+@property (nonatomic) CGFloat collectionViewPushMargin;
+
 @end
 
 const CGFloat kHTHorizontalSelectionListHorizontalMargin = 10;
 const CGFloat kHTHorizontalSelectionListTrimHeight = 0.5;
 const CGFloat kHTHorizontalSelectionListLabelCellInternalPadding = 15;
+const CGFloat kHTHorizontalSelectionListCollectionViewPushDivisor = 1.35;
 
 
 static NSString *LabelCellIdentifier = @"LabelCell";
@@ -55,6 +58,8 @@ static NSString *ViewCellIdentifier = @"ViewCell";
 - (void)commonInit {
     self.backgroundColor = [UIColor whiteColor];
 
+    self.collectionViewPushMargin = [UIScreen mainScreen].bounds.size.width / kHTHorizontalSelectionListCollectionViewPushDivisor;
+    
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     flowLayout.minimumInteritemSpacing = 0;
@@ -74,6 +79,22 @@ static NSString *ViewCellIdentifier = @"ViewCell";
                                                                  options:NSLayoutFormatDirectionLeadingToTrailing
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_collectionView)]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_collectionView
+                                                     attribute:NSLayoutAttributeRight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeRight
+                                                    multiplier:1.0
+                                                      constant:0.0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_collectionView
+                                                     attribute:NSLayoutAttributeLeft
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeLeft
+                                                    multiplier:1.0
+                                                      constant:-1 * self.collectionViewPushMargin]];
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_collectionView]|"
                                                                  options:NSLayoutFormatDirectionLeadingToTrailing
@@ -290,7 +311,7 @@ static NSString *ViewCellIdentifier = @"ViewCell";
 
     if (self.selectionIndicatorStyle == HTHorizontalSelectionIndicatorStyleBottomBar) {
         [self.contentView layoutIfNeeded];
-        self.selectionIndicatorBar.frame = CGRectMake(0,
+        self.selectionIndicatorBar.frame = CGRectMake(-1 * self.collectionViewPushMargin,
                                                       self.contentView.frame.size.height - self.selectionIndicatorHeight,
                                                       0,
                                                       self.selectionIndicatorHeight);
@@ -698,7 +719,7 @@ static NSString *ViewCellIdentifier = @"ViewCell";
         UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:indexPath];
         CGRect cellRect = attributes.frame;
 
-        self.selectionIndicatorBar.frame = CGRectMake(cellRect.origin.x + self.buttonInsets.left + kHTHorizontalSelectionListLabelCellInternalPadding/2 - self.selectionIndicatorHorizontalPadding,
+        self.selectionIndicatorBar.frame = CGRectMake(cellRect.origin.x + self.buttonInsets.left + kHTHorizontalSelectionListLabelCellInternalPadding/2 - self.selectionIndicatorHorizontalPadding - self.collectionViewPushMargin,
                                                       self.contentView.frame.size.height - self.selectionIndicatorHeight,
                                                       cellRect.size.width - self.buttonInsets.left - self.buttonInsets.right - kHTHorizontalSelectionListLabelCellInternalPadding + 2*self.selectionIndicatorHorizontalPadding,
                                                       self.selectionIndicatorHeight);
